@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
 import './style/Form.css';
 
 const Form = () => {
@@ -55,6 +56,14 @@ const Form = () => {
           const responseData = await response.json();
           console.log('Response data:', responseData);
           alert(responseData.message || 'Employee details added to the database!');
+          const emailResponse = await emailjs.send('service_3spj3sg','template_i4me2h5',e.target,'RyRHD8EOt-EpDBkL6');
+          if (emailResponse.status === 200) {
+            console.log('Email sent successfully:', emailResponse.text);
+            alert('Employee details have been sent via email!');
+          } else {
+            console.error('Email sending failed:', emailResponse.text);
+            alert('There was an issue sending the email.');
+          }
           setFormData({ name: '', age: '', email: '', phone: '', emp_id: '', emp_dept: '', emp_doj: '', emp_role: ''});
           setErrors({});
           navigate('/home');
